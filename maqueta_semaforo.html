@@ -451,19 +451,34 @@
     .ctrl-head {
         position: sticky; right: 0; z-index: 110; flex-shrink: 0;
         width: var(--ctrl-width); min-width: var(--ctrl-width);
-        display: flex; background: #434343; border-left: 1px solid var(--line);
+        display: flex; flex-direction: column; background: #434343; border-left: 1px solid var(--line);
+        height: var(--head-h); overflow: hidden;
     }
+    /* Franja de título que agrupa las 8 columnas. */
+    .ctrl-title {
+        height: 22px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 10.5px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase;
+        border-bottom: 1px solid #fff; white-space: nowrap;
+    }
+    .ctrl-head-cells { display: flex; flex: 1 1 auto; min-height: 0; }
     .ctrl-head .ctrl-cell {
-        flex-direction: column; justify-content: flex-start; gap: 7px; padding-top: 9px;
-        color: #fff; box-shadow: inset -1px 0 0 rgba(255,255,255,.35);
+        flex-direction: column; justify-content: flex-start; padding: 6px 0 7px;
+        box-shadow: inset -1px 0 0 rgba(255,255,255,.35);
     }
     .ctrl-head .ctrl-cell + .ctrl-cell { border-left: none; }
     .ctrl-head .ctrl-cell:last-child { box-shadow: none; }
-    .ctrl-head .ctrl-cell i { font-size: 13px; width: 16px; text-align: center; }
+    /* El icono manda: grande y dentro de un círculo claro. */
+    .ctrl-ico {
+        width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(255,255,255,.14); color: #fff; font-size: 17px;
+    }
+    /* El nombre acompaña: pequeño, sin mayúsculas, de abajo hacia arriba
+       y alineado a la base de la cabecera. */
     .ctrl-head .ctrl-name {
-        writing-mode: vertical-rl; height: 96px;
-        font-size: 10px; font-weight: 800; letter-spacing: .3px; line-height: 12px;
-        text-transform: uppercase; text-align: left;
+        writing-mode: vertical-rl; transform: rotate(180deg); margin-top: auto;
+        font-size: 9.5px; font-weight: 600; letter-spacing: .3px; line-height: 1;
+        color: #cfd6dd; white-space: nowrap;
     }
 
     .sem-dot {
@@ -713,7 +728,7 @@ let comboProyecto, comboFase, comboSub;
    ========================================================================= */
 
 const AREAS_CONTROL = [
-    { key: 'prod', nombre: 'Producción y planificación', icono: 'fa-helmet-safety' },
+    { key: 'prod', nombre: 'Producción',  icono: 'fa-helmet-safety' },   // Producción y planificación
     { key: 'costo', nombre: 'Costo',       icono: 'fa-chart-line' },
     { key: 'fin',   nombre: 'Financiero',  icono: 'fa-dollar-sign' },
     { key: 'seg',   nombre: 'Seguridad',   icono: 'fa-triangle-exclamation' },
@@ -759,11 +774,14 @@ function ctrlCeldaProyecto(p) {
 }
 
 function ctrlCabecera() {
-    return '<div class="ctrl-head">' + AREAS_CONTROL.map(a =>
-        '<div class="ctrl-cell">' +
-            '<i class="fas ' + a.icono + '"></i>' +
-            '<span class="ctrl-name">' + esc(a.nombre) + '</span>' +
-        '</div>').join('') + '</div>';
+    return '<div class="ctrl-head">' +
+        '<div class="ctrl-title">Áreas de control</div>' +
+        '<div class="ctrl-head-cells">' + AREAS_CONTROL.map(a =>
+            '<div class="ctrl-cell">' +
+                '<span class="ctrl-ico"><i class="fas ' + a.icono + '"></i></span>' +
+                '<span class="ctrl-name">' + esc(a.nombre) + '</span>' +
+            '</div>').join('') + '</div>' +
+    '</div>';
 }
 
 /* =========================================================================
@@ -1404,7 +1422,7 @@ function construirCabecera() {
     return grupo;
 }
 
-const HEAD_CTRL_H = 132;
+const HEAD_CTRL_H = 118;
 
 function fila(clases, etiquetaHTML, pistaHTML, ctrlHTML) {
     const div = document.createElement('div');
