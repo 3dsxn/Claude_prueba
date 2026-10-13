@@ -433,7 +433,8 @@
     .head-wrap { display: flex; }
     .head-stack { flex: 1 1 auto; min-width: 0; }
     .ctrl-col {
-        position: sticky; right: 0; z-index: 200; flex-shrink: 0;
+        /* z-index 95: sobre la línea de hoy (90), debajo del header (100). */
+        position: sticky; right: 0; z-index: 95; flex-shrink: 0;
         width: var(--ctrl-width); min-width: var(--ctrl-width); height: 100%;
         display: flex; background: #fff; border-left: 1px solid var(--line);
         box-shadow: -4px 0 10px rgba(31,45,61,.06);
